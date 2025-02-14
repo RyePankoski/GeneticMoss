@@ -211,7 +211,7 @@ class TheMossManager:
     
     def handle_lifespan_gene(self, moss):
         # lifespan = random.uniform(0,200)
-        lifespan = 200
+        lifespan = 150
         return int(lifespan)
 
     def check_position_available(self, x, y, offset):
@@ -355,21 +355,21 @@ class TheMossManager:
         self.draw_the_mosses()
         # self.draw_data()
 
-    def draw_the_mosses(self):
-        """Efficient drawing of the entire pixel array"""
-        pygame.surfarray.blit_array(self.screen, self.pixel_array)
-
     # def draw_the_mosses(self):
-    #     font = pygame.font.Font(None, 20)  # Small font size
-    #     self.screen.fill(BLACK)
-    #     for moss in self.all_mosses:
-    #         pos = (int(moss.pos_x), int(moss.pos_y))
-    #         pygame.draw.circle(self.screen, moss.color, pos, moss.size)
-    #         # if moss.dominate_gene:
-    #         #     gene_text = font.render(f"{moss.dominate_gene}", True, (255, 255, 255))
-    #         #     gene_x = moss.pos_x - gene_text.get_width() / 2
-    #         #     gene_y = moss.pos_y - moss.size
-    #         #     self.screen.blit(gene_text, (gene_x, gene_y))
+    #     """Efficient drawing of the entire pixel array"""
+    #     pygame.surfarray.blit_array(self.screen, self.pixel_array)
+
+    def draw_the_mosses(self):
+        font = pygame.font.Font(None, 20)  # Small font size
+        self.screen.fill(BLACK)
+        for moss in self.all_mosses:
+            pos = (int(moss.pos_x), int(moss.pos_y))
+            pygame.draw.circle(self.screen, moss.color, pos, moss.size)
+            # if moss.dominate_gene:
+            #     gene_text = font.render(f"{moss.dominate_gene}", True, (255, 255, 255))
+            #     gene_x = moss.pos_x - gene_text.get_width() / 2
+            #     gene_y = moss.pos_y - moss.size
+            #     self.screen.blit(gene_text, (gene_x, gene_y))
 
     def draw_data(self):
         font = pygame.font.Font(None, 100)
