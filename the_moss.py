@@ -41,24 +41,24 @@ class Moss:
         self.done_growing = False
 
 
-
 class TheMossManager:
-    def __init__(self,screen):
+    def __init__(self, screen):
         self.screen = screen
         self.all_mosses = []
         self.mosses_to_die = []
-        self.position_map ={}
+        self.position_map = {}
         self.max_mosses = 10000
         self.total_mosses = 1
         self.total_operations = 0
         self.size = 3
-        self.offset = self.size/1.5
+        self.offset = self.size / 1.5
 
         self.pixel_surface = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.pixel_surface.fill(BLACK)
         self.pixel_array = pygame.surfarray.pixels3d(self.pixel_surface)
 
-        self.proto_moss = Moss(lifespan = 20, dominate_gene = "none", color = GRAY,size = self.size, pos_x = WINDOW_WIDTH//2 , pos_y = WINDOW_HEIGHT//2)
+        self.proto_moss = Moss(lifespan=20, dominate_gene="none", color=GRAY, size=self.size, pos_x=WINDOW_WIDTH // 2,
+                               pos_y=WINDOW_HEIGHT // 2)
         self.all_mosses.append(self.proto_moss)
         self.position_map[f"{self.proto_moss.pos_x},{self.proto_moss.pos_y}"] = self.proto_moss
 
@@ -150,8 +150,6 @@ class TheMossManager:
 
         return up_pref, down_pref, left_pref, right_pref
 
-
-
     def handle_color_genes(self, parent_moss):
         r, g, b = parent_moss.color
 
@@ -176,12 +174,12 @@ class TheMossManager:
         g += int(random.uniform(-drift, drift))
         b += int(random.uniform(-drift, drift))
 
+        # completely random mutation
         # total_mutation = random.uniform(0,1000)
         # if total_mutation > 999:
         #     r = random.uniform(0,255)
         #     g = random.uniform(0,255)
         #     b = random.uniform(0,255)
-
 
         # Clamp RGB values between 0 and 255
         r = max(0, min(255, r))
@@ -203,12 +201,10 @@ class TheMossManager:
             else:
                 gene_preference = "b"
 
-
-
         color = (r, g, b)
 
         return color, gene_preference
-    
+
     def handle_lifespan_gene(self, moss):
         # lifespan = random.uniform(0,200)
         lifespan = 150
@@ -261,7 +257,7 @@ class TheMossManager:
             new_moss.left = False
         elif false_direction == "right":
             new_moss.right = False
-    
+
         if new_moss.up and f"{pos_x},{pos_y - offset}" in self.position_map:
             new_moss.up = False
 
@@ -273,7 +269,7 @@ class TheMossManager:
 
         if new_moss.right and f"{pos_x + offset},{pos_y}" in self.position_map:
             new_moss.right = False
-            
+
         self.all_mosses.append(new_moss)
         self.draw_moss_to_array(new_moss)
         self.position_map[f"{pos_x},{pos_y}"] = new_moss
@@ -288,7 +284,6 @@ class TheMossManager:
 
         offset = moss.size + self.offset
 
-        # Create list of available directions with their preferences as weights
         available_directions = []
         weights = []
 
@@ -331,9 +326,10 @@ class TheMossManager:
 
     def update(self):
         self.total_operations = 0
-        
+
         if self.total_mosses <= 0:
-            e_moss = Moss(lifespan = 20, dominate_gene = "none", color = WHITE,size = self.size, pos_x = WINDOW_WIDTH//2 , pos_y = WINDOW_HEIGHT//2)
+            e_moss = Moss(lifespan=20, dominate_gene="none", color=WHITE, size=self.size, pos_x=WINDOW_WIDTH // 2,
+                          pos_y=WINDOW_HEIGHT // 2)
             self.all_mosses.append(e_moss)
             self.position_map[f"{e_moss.pos_x},{e_moss.pos_y}"] = e_moss
 
@@ -350,38 +346,27 @@ class TheMossManager:
         if self.mosses_to_die:
             for moss in self.mosses_to_die:
                 self.kill_the_moss(moss)
-            self.mosses_to_die.clear() 
+            self.mosses_to_die.clear()
 
         self.draw_the_mosses()
         # self.draw_data()
 
-    # def draw_the_mosses(self):
-    #     """Efficient drawing of the entire pixel array"""
-    #     pygame.surfarray.blit_array(self.screen, self.pixel_array)
-
     def draw_the_mosses(self):
-        font = pygame.font.Font(None, 20)  # Small font size
-        self.screen.fill(BLACK)
-        for moss in self.all_mosses:
-            pos = (int(moss.pos_x), int(moss.pos_y))
-            pygame.draw.circle(self.screen, moss.color, pos, moss.size)
-            # if moss.dominate_gene:
-            #     gene_text = font.render(f"{moss.dominate_gene}", True, (255, 255, 255))
-            #     gene_x = moss.pos_x - gene_text.get_width() / 2
-            #     gene_y = moss.pos_y - moss.size
-            #     self.screen.blit(gene_text, (gene_x, gene_y))
+        pygame.surfarray.blit_array(self.screen, self.pixel_array)
+
+    # def draw_the_mosses(self):
+    #     font = pygame.font.Font(None, 20)  # Small font size
+    #     self.screen.fill(BLACK)
+    #     for moss in self.all_mosses:
+    #         pos = (int(moss.pos_x), int(moss.pos_y))
+    #         pygame.draw.circle(self.screen, moss.color, pos, moss.size)
+    # if moss.dominate_gene:
+    #     gene_text = font.render(f"{moss.dominate_gene}", True, (255, 255, 255))
+    #     gene_x = moss.pos_x - gene_text.get_width() / 2
+    #     gene_y = moss.pos_y - moss.size
+    #     self.screen.blit(gene_text, (gene_x, gene_y))
 
     def draw_data(self):
         font = pygame.font.Font(None, 100)
         text = font.render(f"{self.total_operations}, total:{self.total_mosses}", True, (WHITE))
         self.screen.blit(text, (10, 10))
-
-
-
-
-
-
-
-
-
-
